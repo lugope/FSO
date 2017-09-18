@@ -27,6 +27,8 @@ int main(){
 
 	printf("scanner -- terminal\n");
 
+    sleep(1);
+
 	int msg_queue_id;
 	int msg_flag = IPC_CREAT | 0666;
 	key_t key;
@@ -42,12 +44,31 @@ int main(){
 
 	s_buf.msg_type = 1;
 
+	fflush(stdin);
+	
+	char* str = malloc(sizeof(char) * 2);
+
+	printf("enter 1 to begin:\n");
+
+	while(1){
+
+		scanf("%s",str);
+
+		if(str[0] == '1'){
+			break;
+		}
+	}
+
 	while(1){
 
 		printf("Enter a message to send by queue: \ntype 0 to leave \n");
 
-		scanf("%s", s_buf.message);
+		scanf("%s[^/n]", s_buf.message);
+		
+		
+		printf("%s\n", s_buf.message);
 
+		printf("%c %d\n", s_buf.message, s_buf.message);
 		if (s_buf.message[0] == '0'){
 			break;
 		}
@@ -65,6 +86,8 @@ int main(){
 		} else {
 			printf("message sent to queue\n");
 		}
+
+		sleep(1);
 	}
 
 

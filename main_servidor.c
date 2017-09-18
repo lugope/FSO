@@ -74,12 +74,14 @@ void listenQueue(int incoming_key, void (*listen_funcion)(char*)){
 	}
 
 	while(1){
+		printf("checking new msg...\n");
 		// Receive message from queue
-		int message_isReceived = msgrcv(msg_queue_id, &msg_buffer, SIZE, type, 0 );
+		int message_isReceived = msgrcv(msg_queue_id, &msg_buffer, SIZE, type, 0);
 
 		if (message_isReceived < 0) {
 			quitProcess("error receiving message");
 		}else{
+			
 			(*listen_funcion)(msg_buffer.message);
 		}
 
@@ -92,12 +94,18 @@ void presentMessage(char* message){
 
 	// Send message to shared memory
 	sendMessageToSharedMemory(message);
+
+	//Cleaning
+	int len = strlen(message);
+	for (int i = 0; i < len; i++){
+		(message)[i] = '\0';
+	}
 }
 
 char* copyString(char* string){
 
 	int length = strlen(string);
-	char* newStr = malloc(sizeof(char) * length + 1);
+	char* newStr = malloc(sizeof(char) * length);
 	strcpy(newStr, string);
 
 	return newStr;
@@ -124,15 +132,17 @@ void setupSharedMemory(key_t chave){
 
 void sendMessageToSharedMemory(char* string){
 
-	printf("sending message to shared memory...");
+	printf("sending message to shared memory...\n");
 
+	
 	char* message = copyString(string);
 	int length = strlen(message) + 1;
 	memcpy(memoriaCompartilhada, message, length);
 	
+	char* str = memoriaCompartilhada;
 	// pointer to end of message
-	memoriaCompartilhada += length;
-	*memoriaCompartilhada = 0; // setup ending message char
+	str += length;
+	*str = 0; // setup ending message char
 
 	printf("waiting for the message is readed...");
 	//Wait for the message is readed

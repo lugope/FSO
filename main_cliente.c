@@ -92,6 +92,8 @@ void readSharedMemory(){
 
 void sendMessageToQueue(key_t key, char* message){
 
+	printf("sending message: %s\n", message);
+
 	int msg_queue_id;
 	int msg_flag = IPC_CREAT | 0666;
 	Msg_buf s_buf;
@@ -104,6 +106,7 @@ void sendMessageToQueue(key_t key, char* message){
 	}
 
 	s_buf.msg_type = 1;
+	strcpy(s_buf.message, message);
 
 	buffer_len = strlen(s_buf.message);
 
