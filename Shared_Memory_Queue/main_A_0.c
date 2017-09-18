@@ -144,12 +144,12 @@ void sendMessageToSharedMemory(char* string){
 	str += length;
 	*str = 0; // setup ending message char
 
-	printf("waiting for the message is readed...");
+	printf("waiting for the message is readed...\n");
 	//Wait for the message is readed
 	while(*memoriaCompartilhada != '*' ){
 		sleep(1);
 	}
 
-	printf("message readed...");
+	printf("message readed...\n");
 	
 }
