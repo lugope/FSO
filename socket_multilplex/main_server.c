@@ -13,15 +13,14 @@ void* handleMessageReading(void* vargp);
 void dispatchThreads();
 
 int server_fd;
+int socket_id;
 
 
 int main(){
 
 	printf("TCP Server in PORT 1984\n");
 
-    char buffer[1024] = {0};
-    int value_read;
-    int socket_id = setupSocket();
+    socket_id = setupSocket();
 
     printf("setup ok!...\n");
 
@@ -59,10 +58,13 @@ void* handleMessageSending(void* vargp){
 }
 
 void* handleMessageReading(void* vargp){
+
+	char buffer[1024] = {0};
+	int valread;
     
     while(1){
         // printf("\nWating for new message...\n");
-        valread = read( sock , buffer, 1024);
+        valread = read( socket_id , buffer, 1024);
         printf("other: %s\n",buffer );
 		
 		int len = strlen(buffer);
