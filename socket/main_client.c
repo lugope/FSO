@@ -19,9 +19,14 @@ int main(){
     printf("Hearing from socket PORT 1984...\n");
 
     while(1){
-        printf("\nWating for new message...\n")
+        printf("\nWating for new message...\n");
         valread = read( sock , buffer, 1024);
         printf("%s\n",buffer );
+		
+		int len = strlen(buffer);
+		memset(buffer, '\0', len);
+
+		sleep(1);
     }
 
     return 0;
