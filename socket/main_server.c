@@ -8,9 +8,7 @@
 
 int setupSocket();
 
-
 int server_fd;
-
 
 
 int main(){
@@ -19,13 +17,17 @@ int main(){
     int value_read;
     int socket_id = setupSocket();
 
-    value_read = read( socket_id , buffer, 1024);
-    printf("%s\n", buffer);
+    char* message = "Server: Hello world little friend!";
 
-    char* message = "Hello world little friend!";
+    while(1){
+        printf("\nSend message to client:\n")
+        scanf("%s", message);
 
-    send(socket_id , message , strlen(message) , 0 );
-    printf("message sent\n");
+        printf("/nwaiting for client...\n");
+        // write in socket
+        send(socket_id , message , strlen(message) , 0 );
+        printf("message sent\n");
+    }
 
     return 0;
 }

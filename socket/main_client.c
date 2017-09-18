@@ -5,14 +5,33 @@
 #include <string.h>
 
 #define PORT 1984
+
+int setupSocket();
   
-int main(int argc, char const *argv[])
-{
+int main(){
+
+    int sock = 0;
+    int valread;
+    char buffer[1024] = {0};
+
+    sock = setupSocket();
+
+    printf("Hearing from socket PORT 1984...\n");
+
+    while(1){
+        printf("\nWating for new message...\n")
+        valread = read( sock , buffer, 1024);
+        printf("%s\n",buffer );
+    }
+
+    return 0;
+}
+
+int setupSocket(){
     struct sockaddr_in address;
     int sock = 0;
     int valread;
     struct sockaddr_in serv_addr;
-    char buffer[1024] = {0};
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         printf("error socket creation");
@@ -34,14 +53,6 @@ int main(int argc, char const *argv[])
         printf("\nConnection Failed\n");
         return -1;
     }
-
-    char* message = "Hi there Big brother!";
-
-    send(sock , message , strlen(message) , 0 );
-    printf("message sent\n");
-
-    valread = read( sock , buffer, 1024);
-    printf("%s\n",buffer );
-
-    return 0;
+    
+    return sock;
 }
