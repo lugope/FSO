@@ -12,13 +12,16 @@ void* handleMessageSending(void* vargp);
 void* handleMessageReading(void* vargp);
 void dispatchThreads();
   
+
+int socket_id;
+
 int main(){
 
     int sock = 0;
     int valread;
     char buffer[1024] = {0};
 
-    sock = setupSocket();
+    socket_id = setupSocket();
 
     printf("Hearing from socket PORT 1984...\n");
 
@@ -56,10 +59,13 @@ void* handleMessageSending(void* vargp){
 }
 
 void* handleMessageReading(void* vargp){
+
+	char buffer[1024] = {0};
+	int valread;
     
     while(1){
         // printf("\nWating for new message...\n");
-        valread = read( sock , buffer, 1024);
+        valread = read( socket_id , buffer, 1024);
         printf("other: %s\n",buffer );
 		
 		int len = strlen(buffer);
@@ -68,6 +74,7 @@ void* handleMessageReading(void* vargp){
 		sleep(1);
     }
 }
+
 
 int setupSocket(){
     struct sockaddr_in address;
