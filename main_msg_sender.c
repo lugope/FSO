@@ -25,6 +25,8 @@ typedef struct Msg_buf Msg_buf;
 
 int main(){
 
+	printf("scanner -- terminal\n");
+
 	int msg_queue_id;
 	int msg_flag = IPC_CREAT | 0666;
 	key_t key;
@@ -40,26 +42,30 @@ int main(){
 
 	s_buf.msg_type = 1;
 
-	
-	printf("Enter a message to send by queue:\n");
+	while(1){
 
-	scanf("%[^\n]", s_buf.message);
+		printf("Enter a message to send by queue: \ntype 0 to leave \n");
 
-	getchar();
+		scanf("%s", s_buf.message);
 
-	buffer_len = strlen(s_buf.message);
+		if (s_buf.message[0] == '0'){
+			break;
+		}
 
-	int sending_value = msgsnd(msg_queue_id, &s_buf, buffer_len, IPC_NOWAIT);
+		getchar();
 
-	if( sending_value < 0 ){
-		printf("%d %ld %s, %lu\n", msg_queue_id, s_buf.msg_type, s_buf.message, buffer_len);
+		buffer_len = strlen(s_buf.message);
 
-		quitProcess("message send error");
-	} else {
-		
-		printf("message sent to queue\n");
+		int sending_value = msgsnd(msg_queue_id, &s_buf, buffer_len, IPC_NOWAIT);
+
+		if( sending_value < 0 ){
+			printf("%d %ld %s, %lu\n", msg_queue_id, s_buf.msg_type, s_buf.message, buffer_len);
+
+			quitProcess("message send error");
+		} else {
+			printf("message sent to queue\n");
+		}
 	}
-
 
 
 	return 0;

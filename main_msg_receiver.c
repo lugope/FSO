@@ -25,6 +25,8 @@ typedef struct Msg_buf Msg_buf;
 
 int main(){
 
+	printf("presenter -- terminal\n");
+
 	int msg_queue_id;
 	int msg_flag = 0666;
 	key_t key;
@@ -32,20 +34,24 @@ int main(){
 
 	int type = 1;
 
-	key = 4242;
+	key = 4343;
 	msg_queue_id = msgget(key, msg_flag);
 	
 	if ( msg_queue_id < 0 ) {
 		quitProcess("message queue id error");
 	}
 
-	// Receive message from queue
-	int message_isReceived = msgrcv(msg_queue_id, &msg_buffer, SIZE, type, 0 );
+	while(1){
+		// Receive message from queue
+		int message_isReceived = msgrcv(msg_queue_id, &msg_buffer, SIZE, type, 0 );
 
-	if (message_isReceived < 0) {
-		quitProcess("error receiving message");	
-	}else{
-		printf("message:\n%s\n", msg_buffer.message);
+		if (message_isReceived < 0) {
+			quitProcess("error receiving message");	
+		}else{
+			printf("message:\n%s\n", msg_buffer.message);
+		}
+
+		sleep(1);
 	}
 
 	return 0;
