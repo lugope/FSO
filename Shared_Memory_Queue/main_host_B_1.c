@@ -23,6 +23,11 @@ struct Msg_buf {
 
 typedef struct Msg_buf Msg_buf;
 
+void clearString(char* string);
+
+
+// The presenter
+// Host B
 int main(){
 
 	printf("presenter -- terminal\n");
@@ -42,6 +47,10 @@ int main(){
 	}
 
 	while(1){
+
+		//Cleaning buffer message
+		clearString(msg_buffer.message);
+
 		// Receive message from queue
 		int message_isReceived = msgrcv(msg_queue_id, &msg_buffer, SIZE, type, 0 );
 
@@ -55,4 +64,12 @@ int main(){
 	}
 
 	return 0;
+}
+
+
+void clearString(char* string){
+	int len = strlen(string);
+	for (int i = 0; i < len; i++){
+		(string)[i] = '\0';
+	}
 }
